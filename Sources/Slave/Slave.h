@@ -4,7 +4,7 @@ const uint64_t addr = 0xFFFFBACE64;
 const uint8_t bufSize = 32;
 
 //status initialisation
-bool status_is_emitter = 1;
+bool status_is_emitter = 0;
 
 //dialog
 char data_out1[bufSize + 1] = "1This is a time to exterminatus!";

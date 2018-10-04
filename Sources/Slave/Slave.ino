@@ -34,7 +34,7 @@ void loop() {
         }
       }
 
-      //we need a condition to switch
+      status_is_emitter = 0;
 
       radio.startListening();
     }
@@ -51,16 +51,7 @@ void loop() {
     }
 
     //we need a condition to switch between statuses instead of this
-    /*
-    if (data_in[0] == '1') //maybe we need to check out
-                            //this place for mistakes
-    {
-      status_is_emitter = 0;
-    }
-    else
-    {
-      status_is_emitter = 1;
-    }
-    */
+    if (data_in[0] == '1') status_is_emitter = 1;
+    //maybe we need to check out this place for mistakes
   }
 }
