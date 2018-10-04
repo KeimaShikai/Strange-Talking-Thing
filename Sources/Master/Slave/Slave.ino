@@ -1,15 +1,6 @@
 #include <SPI.h>
 #include "RF24.h"
-
-//place for future global variables
-//make sense to put everything in other file
-const uint8_t bufSize = 32;
-
-RF24 radio(7, 8);
-const uint64_t addr = 0xFFFFBACE64;
-
-//bool bRole = 0;
-bool status_is_emitter = 1;
+#include "Slave.h"
 
 void setup() {
   Serial.begin(115200);
@@ -26,11 +17,6 @@ void setup() {
 
 void loop() {
 
-  char data_out1[bufSize + 1] = "1This is a time to exterminatus!";
-  char data_out2[bufSize + 1] = "0Check out this epic drop!";
-  char data_in[bufSize + 1] = "";
-
-  //place for two if constractions
   if (status_is_emitter)
   {
     if (Serial.available())
@@ -40,31 +26,32 @@ void loop() {
 
       size_t len = Serial.readBytes(data_out1, bufSize);
 
-      //Serial.print(F("< "));
-      //Serial.println(data);
-
       for (uint8_t i = 0; i < (len / szPayload) + 1; ++i)
       {
-        if (!radio.write( data_out1, min(len, szPayload) ))
+        if (!radio.write(data_out1, min(len, szPayload)))
         {
           Serial.println(F("failed send"));
         }
       }
+
+      //we need a condition to switch
 
       radio.startListening();
     }
   }
   else
   {
-    if ( radio.available() )
+    if (radio.available())
     {
-      Serial.print(F("> "));
-      while ( radio.available() )
+      while (radio.available())
       {
-        radio.read( data_in, bufSize );
+        radio.read(data_in, bufSize);
         Serial.print(data_in);
       }
     }
+
+    //we need a condition to switch between statuses instead of this
+    /*
     if (data_in[0] == '1') //maybe we need to check out
                             //this place for mistakes
     {
@@ -74,5 +61,6 @@ void loop() {
     {
       status_is_emitter = 1;
     }
+    */
   }
 }
